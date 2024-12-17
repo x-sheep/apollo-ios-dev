@@ -37,6 +37,7 @@ public extension GraphQLInterfaceType {
   class func mock(
     _ name: String = "",
     fields: [String: GraphQLField] = [:],
+    keyFields: [String] = [],
     interfaces: [GraphQLInterfaceType] = [],
     documentation: String? = nil
   ) -> GraphQLInterfaceType {
@@ -44,7 +45,8 @@ public extension GraphQLInterfaceType {
       name: GraphQLName(schemaName: name),
       documentation: documentation,
       fields: fields,
-      interfaces: interfaces
+      interfaces: interfaces,
+      keyFields: keyFields
     )
   }
 }

@@ -260,4 +260,18 @@ class CacheKeyResolutionTests: XCTestCase {
     expect(actual).to(beNil())
   }
   
+  func test__schemaConfiguration__givenInterfaceWithKeyField_shouldReturnKeyFieldValue() {
+    let Interface = Interface(name: "Animal", keyFields: ["id"])
+
+    let object: JSONObject = [
+      "__typename": "Cat",
+      "id": "10",
+    ]
+
+    let objectDict = NetworkResponseExecutionSource().opaqueObjectDataWrapper(for: object)
+    let actual = MockSchemaMetadata.cacheKey(for: objectDict, withInterface: Interface)
+
+    expect(actual).to(equal("Cat:10"))
+  }
+  
 }

@@ -170,7 +170,7 @@ export function addTypePolicyDirectivesToSchema(schema: GraphQLSchema) {
   for (const key in types) {
     const type = types[key];
 
-    if (type instanceof GraphQLObjectType) {
+    if (type instanceof GraphQLObjectType || type instanceof GraphQLInterfaceType) {
       (type as any)._apolloKeyFields = keyFieldsFor(type);
     }
   }

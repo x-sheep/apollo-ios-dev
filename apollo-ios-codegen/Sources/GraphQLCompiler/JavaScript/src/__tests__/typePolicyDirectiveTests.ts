@@ -16,6 +16,10 @@ describe("given SDL without typePolicy", () => {
     allRectangles: [Rectangle!]
   }
 
+  interface Shape {
+    surface: Int!
+  }
+
   type Rectangle {
     width: Int!
     height: Int!
@@ -29,6 +33,9 @@ describe("given SDL without typePolicy", () => {
 
     const type = schema.getTypeMap()["Rectangle"] as ObjectWithMeta;
     expect(type._apolloKeyFields).toHaveLength(0);
+
+    const iface = schema.getTypeMap()["Shape"] as ObjectWithMeta;
+    expect(iface._apolloKeyFields).toHaveLength(0);
   });
 });
 
@@ -86,6 +93,10 @@ describe("given SDL with valid typePolicy", () => {
       const type = schema.getTypeMap()["Dog"] as ObjectWithMeta;
       expect(type._apolloKeyFields).toHaveLength(1);
       expect(type._apolloKeyFields).toContain("id");
+
+      const iface = schema.getTypeMap()["Animal"] as ObjectWithMeta;
+      expect(iface._apolloKeyFields).toHaveLength(1);
+      expect(iface._apolloKeyFields).toContain("id");
     });
   });
 

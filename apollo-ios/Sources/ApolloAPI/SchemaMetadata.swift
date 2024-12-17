@@ -52,16 +52,17 @@ extension SchemaMetadata {
   /// for the `NormalizedCache`.
   ///
   /// - Parameter object: A ``JSONObject`` dictionary representing an object in a GraphQL response.
+  /// - Parameter interface: An optional ``Interface`` of the expected object.
   /// - Returns: A `String` representing the cache key for the `object` to be used by
   /// `NormalizedCache` mechanisms.
-  @inlinable public static func cacheKey(for object: ObjectData) -> String? {
+  @inlinable public static func cacheKey(for object: ObjectData, withInterface interface: Interface? = nil) -> String? {
     guard let type = graphQLType(for: object) else { return nil }
     
     if let info = configuration.cacheKeyInfo(for: type, object: object) {
       return "\(info.uniqueKeyGroup ?? type.typename):\(info.id)"
     }
     
-    guard let keyFields = type.keyFields else { return nil }
+    guard let keyFields = type.keyFields ?? interface?.keyFields else { return nil }
     
     let idValues = try? keyFields.map {
       guard let keyFieldValue = object[$0] else {
